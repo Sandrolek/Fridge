@@ -127,6 +127,7 @@ class Drum {
     bool press_any;
     bool ender_down;
     bool ender_drum;
+    bool state_lum;
 };
 
 Drum drum = Drum();
@@ -191,6 +192,7 @@ Drum::Drum() {
   ender_down = false;
   ender_drum = false;
   step_need = 0;
+  state_lum = true;
 }
 
 void Drum::run_drum() {
@@ -251,7 +253,7 @@ void Drum::load_unload(int _num_pos) {
     spoon_up();
     Serial.println("Waiting...");
     delay(2000);
-    spoon_down();
+    spoon_down(_num_pos);
     move_to_default();
   }
 }
@@ -277,6 +279,9 @@ void Drum::spoon_up() {
   digitalWrite(PIN_SPOON_DIR, HIGH); // экспериметально подбираем направление движения
   Serial.println("Up spoooooon...");
   for (int i = 0; i <= UP_STEPS; i++) {
+    if (i % 50 == 0) 
+      state_lum = !state_lum;
+    digitalWrite()
     digitalWrite(PIN_SPOON_RUN, 1);
     delayMicroseconds(5);
     digitalWrite(PIN_SPOON_RUN, 0);
@@ -347,7 +352,7 @@ void Drum::check_optopars() {
 }
 
 void Drum::show_lumines() {
-  Serial.print(" Lumines: ");
+  Serial.print(" Lumines: "); 
   for (int i = 0; i < 5; i++) {
     Serial.print(optopars[i]);
     Serial.print(" ");
